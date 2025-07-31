@@ -654,7 +654,7 @@
                                     <td class="py-3 px-4 text-gray-800">${item.name}</td>
                                     <td class="py-3 px-4 text-gray-800">${item.quantity}</td>
                                     <td class="py-3 px-4 text-gray-800">${getCurrencySymbol(currency)}${(item.price).toFixed(2)}</td>
-                                    <td class="py-3 px-4 text-gray-800">${getCurrencySymbol(currency)}{(item.quantity * item.price).toFixed(2)}</td>
+                                    <td class="py-3 px-4 text-gray-800">${getCurrencySymbol(currency)}${(item.total).toFixed(2)}</td>
                                     <td class="py-3 px-4">
                                         <button data-id="${item.id}" class="remove-item-btn text-red-500 hover:text-red-700 transition duration-200" title="Remove Item">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -684,7 +684,7 @@
 
             function renderBillPreview() {
                 const currentStyle = templateStyles[billTemplate] || templateStyles.modern;
-                const subtotal = items.reduce((sum, item) => sum + (item.quantity * item.price), 0);
+                const subtotal = items.reduce((sum, item) => sum + (item.total), 0);
                 const taxAmount = (subtotal * taxRate) / 100;
                 const total = subtotal + taxAmount;
                 const currentCurrencySymbol = getCurrencySymbol(currency);
@@ -743,12 +743,12 @@
                             <span class="w-1/6 text-center">${item.quantity}</span>
                             <span class="w-1/2 text-left">${item.name}</span>
                             <span class="w-1/6 text-right">${currentCurrencySymbol}${item.price.toFixed(2)}</span>
-                            <span class="w-1/6 text-right">${currentCurrencySymbol}${(item.quantity * item.price).toFixed(2)}</span>
+                            <span class="w-1/6 text-right">${currentCurrencySymbol}${(item.total).toFixed(2)}</span>
                         ` : `
                             <span class="w-1/2 text-left">${item.name}</span>
                             <span class="w-1/6 text-center">${item.quantity}</span>
                             <span class="w-1/6 text-right">${currentCurrencySymbol}${item.price.toFixed(2)}</span>
-                            <span class="w-1/6 text-right">${currentCurrencySymbol}${(item.quantity * item.price).toFixed(2)}</span>
+                            <span class="w-1/6 text-right">${currentCurrencySymbol}${(item.total).toFixed(2)}</span>
                         `;
                         return `<div class="flex justify-between py-0.5 ${currentStyle.showItemBorders ? 'border-b border-dashed border-gray-200' : ''} last:border-b-0">${rowContent}</div>`;
                     }).join('');
@@ -832,6 +832,7 @@
                     name: itemName,
                     quantity: itemQuantity,
                     price: itemPrice,
+                    total: itemQuantity * itemPrice,
                 };
 
                 items.push(newItem);
